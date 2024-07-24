@@ -22,6 +22,7 @@ import { authFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getLoggedInUser, signIn, signUp } from "@/lib/actions/user.actions";
+import PlaidLink from "./PlaidLink";
 
 const AuthForm = ({ type }: { type: string }) => {
   const router = useRouter();
@@ -47,8 +48,22 @@ const AuthForm = ({ type }: { type: string }) => {
 
     try {
       //sign up with appwrite & create  plain link token
+      
       if (type === "sign-up") {
-         const newUser = await signUp(Data);
+      const userData = {
+        firstName: Data.firstName!,
+        lastName: Data.lastName!,
+        address1: Data.address!,
+        city: Data.city!,
+        state: Data.state!,
+        postalCode: Data.postalCode!,
+        dateOfBirth: Data.dateOfBirth!,
+        ssn: Data.ssn!,
+        email: Data.email!,
+        password: Data.password!,
+
+      }
+         const newUser = await signUp(userData);
          setUser(newUser);
       }
 
@@ -90,7 +105,9 @@ items-center gap-2 flex"
         </h1>
       </div>
       {user ? (
-        <div className="flex flex-col gap-4">{/* Plaid link */}</div>
+        <div className="flex flex-col gap-4">
+          <PlaidLink user={user} variant="primary" />
+          </div>
       ) : (
         <>
           <Form {...form}>
@@ -197,7 +214,7 @@ items-center gap-2 flex"
             </Link>
           </footer>
         </>
-      )}
+       )} 
     </section>
   );
 };
