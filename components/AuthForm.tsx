@@ -29,7 +29,6 @@ const AuthForm = ({ type }: { type: string }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-
   const FormSchema = authFormSchema(type);
   // 1. Define your form.
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -48,31 +47,30 @@ const AuthForm = ({ type }: { type: string }) => {
 
     try {
       //sign up with appwrite & create  plain link token
-      
-      if (type === "sign-up") {
-      const userData = {
-        firstName: Data.firstName!,
-        lastName: Data.lastName!,
-        address1: Data.address!,
-        city: Data.city!,
-        state: Data.state!,
-        postalCode: Data.postalCode!,
-        dateOfBirth: Data.dateOfBirth!,
-        ssn: Data.ssn!,
-        email: Data.email!,
-        password: Data.password!,
 
-      }
-         const newUser = await signUp(userData);
-         setUser(newUser);
+      if (type === "sign-up") {
+        const userData = {
+          firstName: Data.firstName!,
+          lastName: Data.lastName!,
+          address1: Data.address1!,
+          city: Data.city!,
+          state: Data.state!,
+          postalCode: Data.postalCode!,
+          dateOfBirth: Data.dateOfBirth!,
+          ssn: Data.ssn!,
+          email: Data.email!,
+          password: Data.password!,
+        };
+        const newUser = await signUp(userData);
+        setUser(newUser);
       }
 
       if (type === "sign-in") {
-          const response = await signIn({
-            email: Data.email,
-            password: Data.password,
-          });
-          if(response) router.push('/')
+        const response = await signIn({
+          email: Data.email,
+          password: Data.password,
+        });
+        if (response) router.push("/");
       }
     } catch (error) {
       console.log(error);
@@ -88,8 +86,8 @@ const AuthForm = ({ type }: { type: string }) => {
         className="gap-1 
 cursor pointer 
 items-center gap-2 flex"
-      >
-        <Image src="/icons/logo.svg" width={34} height={34} alt="idk logo" />
+        >
+          <Image src="/icons/logo.svg" width={34} height={34} alt="idk logo" />
         <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
           Idk
         </h1>
@@ -107,7 +105,7 @@ items-center gap-2 flex"
       {user ? (
         <div className="flex flex-col gap-4">
           <PlaidLink user={user} variant="primary" />
-          </div>
+        </div>
       ) : (
         <>
           <Form {...form}>
@@ -131,7 +129,7 @@ items-center gap-2 flex"
                   </div>
                   <CustomInput
                     control={form.control}
-                    name="address"
+                    name="address1"
                     label="Address"
                     placeholder="Enter your specific address"
                   />
@@ -214,7 +212,7 @@ items-center gap-2 flex"
             </Link>
           </footer>
         </>
-       )} 
+      )}
     </section>
   );
 };
